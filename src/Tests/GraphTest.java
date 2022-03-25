@@ -29,6 +29,14 @@ public class GraphTest {
     @Test
     public void addEdge() {
         graph.addEdge(0, 1);    // unweighted, bidirectional, 2 edges
+        graph.addEdge(1, 0, 10, false); // adding edge that already exists; should replace old one
+
+        assertEquals(2, graph.getNumberOfEdges());
+
+        assertEquals(0, graph.nodes.get(0).edges.get(0).weight);
+        assertEquals(10, graph.nodes.get(1).edges.get(0).weight);// check if weight are updated
+
+
         graph.addEdge(0, 2, 2); // weighted, bidirectional, 2 edges
         graph.addEdge(1, 2, false); // unweighted, one direction, 1 edge
         graph.addEdge(2, 1, 3, false); // weighted, one direction, 1 edge

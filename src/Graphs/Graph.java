@@ -31,9 +31,29 @@ public class Graph {
 
     // fully custom
     public void addEdge(int source, int destination, int weight, boolean bidirectional){
+
+        // need to check if edge already exists, replace with new one
+        Edge edge = new Edge(nodes.get(destination), weight);
+
+        for (Edge e : nodes.get(source).edges){
+            if (e.destination.equals(edge.destination)){    // if connecting to the same node, delete old edge
+                nodes.get(source).edges.remove(e);
+                numberOfEdges -= 1;
+                break;
+            }
+        }
+
         numberOfEdges += 1;
         nodes.get(source).edges.add(new Edge(nodes.get(destination), weight));
+
         if (bidirectional) {
+            for (Edge e : nodes.get(destination).edges){
+                if (e.destination.equals(edge.destination)){
+                    nodes.get(destination).edges.remove(e);
+                    numberOfEdges -= 1;
+                    break;
+                }
+            }
             nodes.get(destination).edges.add(new Edge(nodes.get(source), weight));
             numberOfEdges += 1;
         }
@@ -61,7 +81,7 @@ public class Graph {
 
     // print out whole graph in console
     public void printGraph() {
-        System.out.println("\nGraphs.Graph nodes:");
+        System.out.println("\nGraph nodes:");
         for (Node x : nodes) {
             System.out.println("("+ nodes.indexOf(x)+ ") "+ x.name);
             for (Edge e : x.edges) {
